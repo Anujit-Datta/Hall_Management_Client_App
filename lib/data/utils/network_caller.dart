@@ -13,7 +13,7 @@ class NetworkCaller{
       });
       log(response.statusCode.toString());
       log(response.body);
-      if(response.statusCode==200){
+      if(response.statusCode==200 || response.statusCode==201){
         final decodedResponse=jsonDecode(response.body);
         return NetworkResponse(
           statusCode: response.statusCode,

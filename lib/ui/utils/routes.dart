@@ -12,7 +12,7 @@ final GoRouter router = GoRouter(
       },
       routes: <RouteBase>[
         GoRoute(
-          path: 'home',
+          path: '/login',
           builder: (BuildContext context, GoRouterState state) {
             return const LoginScreen();
           },

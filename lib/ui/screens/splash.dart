@@ -32,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(const Duration(seconds: 2));
     if (!mounted) return;
     EasyLoading.showToast('Welcome to Hall Manager');
-    context.go('/home');
+    context.go('/login');
   }
 }
 
