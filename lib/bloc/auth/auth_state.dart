@@ -22,3 +22,12 @@ final class LoginErrorState extends AuthState {
   @override
   List<Object> get props => [];
 }
+
+final class ResetState extends AuthState {
+  final bool isRequested;
+  final bool isVerified;
+  final bool isPasswordSet;
+  const ResetState(this.isRequested, this.isVerified, this.isPasswordSet);
+  @override
+  List<Object> get props => [];
+}

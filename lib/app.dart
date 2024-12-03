@@ -21,8 +21,8 @@ class HallManager extends StatelessWidget {
         routerConfig: router,
         builder: EasyLoading.init(),
         theme: FlexThemeData.light(scheme: FlexScheme.aquaBlue),
-        darkTheme: FlexThemeData.dark(scheme: FlexScheme.aquaBlue),
-        themeMode: ThemeMode.system,
+        //darkTheme: FlexThemeData.dark(scheme: FlexScheme.aquaBlue),
+        themeMode: ThemeMode.light,
       ),
     );
   }

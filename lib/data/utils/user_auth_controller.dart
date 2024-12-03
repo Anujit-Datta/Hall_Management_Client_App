@@ -9,7 +9,8 @@ class AuthController{
   static Future<void> setToken(String token)async{
     log(token);
     SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
-    sharedPreferences.setString(_key, token);
+    await sharedPreferences.setString(_key, token);
+    log(sharedPreferences.getString(_key)??'null');
     accessToken=token;
   }
 

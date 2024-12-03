@@ -60,23 +60,25 @@ class NetworkCaller{
       );
       log(response.statusCode.toString());
       log(response.body);
-      if(response.statusCode==200){
+      if(response.statusCode==200 || response.statusCode==201){
         final decodedResponse=jsonDecode(response.body);
         return NetworkResponse(
           statusCode: response.statusCode,
           isSuccess: true,
           responseData: decodedResponse,
         );
-      }else if(response.statusCode==401){
+      }else if(response.statusCode==401 || response.statusCode==400){
         goToSignInScreen();
         return NetworkResponse(
           statusCode: response.statusCode,
           isSuccess: false,
+          responseData: jsonDecode(response.body),
         );
       }else{
         return NetworkResponse(
           statusCode: response.statusCode,
           isSuccess: false,
+          responseData: jsonDecode(response.body),
         );
       }
     }catch(error){
@@ -89,7 +91,6 @@ class NetworkCaller{
   }
 
   static void goToSignInScreen()async{
-    AuthController.deleteData();
-
+    //AuthController.deleteData();
   }
 }
