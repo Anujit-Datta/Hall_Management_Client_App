@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:hall_management_client/data/utils/user_auth_controller.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -29,9 +30,16 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
   Future<void> goToHomeScreen() async {
-    await Future.delayed(const Duration(seconds: 2));
-    if (!mounted) return;
-    context.replace('/login');
+    bool loggedIn=await AuthController.isLoggedIn();
+    await Future.delayed(const Duration(seconds: 1));
+    if(loggedIn){
+      if(mounted){
+        context.replace('/home');
+      }
+    }else{
+      if (!mounted) return;
+      context.replace('/login');
+    }
   }
 }
 

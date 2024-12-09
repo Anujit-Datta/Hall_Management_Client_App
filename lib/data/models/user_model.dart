@@ -1,65 +1,72 @@
+import 'dart:convert';
 class User {
-  String? sId;
-  String? email;
-  String? firstName;
-  String? lastName;
-  String? role;
-  int? borderNo;
-  int? roomNo;
-  String? fcmToken;
+  String id;
+  String email;
+  String firstName;
+  String lastName;
+  String role;
+  String? password;
+  int borderNo;
+  int roomNo;
+  String fcmToken;
   bool? isActive;
   bool? isDeleted;
-  String? uid;
-  String? createdAt;
-  String? updatedAt;
+  String userId;
+  DateTime? createdAt;
+  DateTime? updatedAt;
 
-  User(
-      {this.sId,
-        this.email,
-        this.firstName,
-        this.lastName,
-        this.role,
-        this.borderNo,
-        this.roomNo,
-        this.fcmToken,
-        this.isActive,
-        this.isDeleted,
-        this.uid,
-        this.createdAt,
-        this.updatedAt});
+  User({
+    required this.id,
+    required this.email,
+    required this.firstName,
+    required this.lastName,
+    required this.role,
+    this.password,
+    required this.borderNo,
+    required this.roomNo,
+    required this.fcmToken,
+    this.isActive,
+    this.isDeleted,
+    required this.userId,
+    this.createdAt,
+    this.updatedAt,
+  });
 
-  User.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    email = json['email'];
-    firstName = json['firstName'];
-    lastName = json['lastName'];
-    role = json['role'];
-    borderNo = json['borderNo'];
-    roomNo = json['roomNo'];
-    fcmToken = json['fcmToken'];
-    isActive = json['isActive'];
-    isDeleted = json['isDeleted'];
-    uid = json['userId'];
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
-  }
+  factory User.fromRawJson(String str) => User.fromJson(json.decode(str));
 
-  // Map<String, dynamic> toJson() {
-  //   final Map<String, dynamic> data = <String, dynamic>{};
-  //   data['_id'] = sId;
-  //   data['email'] = email;
-  //   data['firstName'] = firstName;
-  //   data['lastName'] = lastName;
-  //   data['role'] = role;
-  //   data['password'] = password;
-  //   data['borderNo'] = borderNo;
-  //   data['roomNo'] = roomNo;
-  //   data['fcmToken'] = fcmToken;
-  //   data['isActive'] = isActive;
-  //   data['isDeleted'] = isDeleted;
-  //   data['userId'] = userId;
-  //   data['createdAt'] = createdAt;
-  //   data['updatedAt'] = updatedAt;
-  //   return data;
-  // }
+  String toRawJson() => json.encode(toJson());
+
+  factory User.fromJson(Map<String, dynamic> json) => User(
+        id: json["_id"]??'null',
+        email: json["email"]??'null',
+        firstName: json["firstName"]??'null',
+        lastName: json["lastName"]??'null',
+        role: json["role"]??'null',
+        password: json["password"]??'null',
+        borderNo: json["borderNo"]??0,
+        roomNo: json["roomNo"]??0,
+        fcmToken: json["fcmToken"]??'null',
+        isActive: json["isActive"]??true,
+        isDeleted: json["isDeleted"]??false,
+        userId: json["userId"]??'null',
+        createdAt: DateTime.parse(json["createdAt"]),
+        updatedAt: DateTime.parse(json["updatedAt"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "_id": id,
+        "email": email,
+        "firstName": firstName,
+        "lastName": lastName,
+        "role": role,
+        "password": password??'',
+        "borderNo": borderNo,
+        "roomNo": roomNo,
+        "fcmToken": fcmToken,
+        "isActive": isActive??true,
+        "isDeleted": isDeleted??false,
+        "userId": userId,
+        "createdAt": createdAt?.toIso8601String() ?? "",
+        "updatedAt": updatedAt?.toIso8601String() ?? "",
+      };
 }

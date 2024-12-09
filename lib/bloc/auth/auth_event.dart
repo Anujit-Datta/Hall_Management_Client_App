@@ -37,3 +37,8 @@ final class SetPasswordEvent extends AuthEvent {
   @override
   List<Object> get props => [];
 }
+
+final class LogoutEvent extends AuthEvent {
+  @override
+  List<Object> get props => [];
+}

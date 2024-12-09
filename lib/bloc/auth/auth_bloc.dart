@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hall_management_client/data/models/network_response.dart';
+import 'package:hall_management_client/data/utils/current_user_controller.dart';
 import 'package:hall_management_client/data/utils/network_caller.dart';
 import 'package:hall_management_client/data/utils/urls.dart';
 import 'package:hall_management_client/data/utils/user_auth_controller.dart';
@@ -16,8 +18,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc() : super(AuthInitial(isObscure: true)) {
     on<PassObscureToggleEvent>((event, emit) {
       (state as AuthInitial).isObscure
-          ? emit(AuthInitial(isObscure: false))
-          : emit(AuthInitial(isObscure: true));
+          ? emit(const AuthInitial(isObscure: false))
+          : emit(const AuthInitial(isObscure: true));
     });
 
     on<LoginEvent>((event, emit) async {
@@ -27,6 +29,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         body: {"email": event.email, "password": event.password},
       );
       if(response.isSuccess){
+        await CurrentUserController.set(jsonEncode(response.responseData['result']['data']['user']));
         await AuthController.setToken(response.responseData['result']['data']['token']);
         log(response.responseData["result"]["data"]["token"]);
         EasyLoading.dismiss();
@@ -89,6 +92,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         EasyLoading.dismiss();
         EasyLoading.showError(response.responseData['message'],);
       }
+    });
+
+    on<LogoutEvent>((event,emit)async {
+      await AuthController.deleteData();
+      router.push('/login');
+      emit(const AuthInitial());
     });
   }
 }
