@@ -7,5 +7,5 @@ class Urls{
   static const String setPass='$_baseUrl/user/reset-password';
 
   static String updateUser(String uid)=>'$_baseUrl/user/$uid';
-
+  static String getUser(String uid)=>'$_baseUrl/user/$uid';
 }

@@ -3,21 +3,21 @@ import 'package:hall_management_client/data/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CurrentUserController{
-  static User? currentUser;
+  static String? currentUserId;
 
-  static const _key='user';
+  static const _key='uid';
 
   static Future<void> set(String data)async{
     SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
     await sharedPreferences.setString(_key, data);
     log("saved: ${sharedPreferences.getString(_key)??'null'}");
-    currentUser=User.fromRawJson(data);
+    currentUserId=data;
   }
 
-  static Future<User> get()async{
+  static Future<String?> get()async{
     SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
-    currentUser=User.fromRawJson(sharedPreferences.getString(_key)??'');
-    return currentUser!;
+    currentUserId=sharedPreferences.getString(_key);
+    return currentUserId;
   }
 
   // static Future<bool> isLoggedIn()async{
@@ -33,6 +33,6 @@ class CurrentUserController{
   static Future<void> delete()async{
     SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
     await sharedPreferences.clear();
-    currentUser=null;
+    currentUserId=null;
   }
 }

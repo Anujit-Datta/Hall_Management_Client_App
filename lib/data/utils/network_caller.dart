@@ -8,10 +8,17 @@ class NetworkCaller{
   static Future<NetworkResponse> getRequest({required String url})async{
     try{
       log(url);
-      final Response response = await get(Uri.parse(url),headers: {
-        'token' : AuthController.accessToken
-      });
-      log(response.statusCode.toString());
+      String token = await AuthController.getToken();
+      log(token);
+      Response response;
+      if(token.isNotEmpty){
+        response = await get(Uri.parse(url), headers: {
+          "Authorization": "Bearer $token",
+        });
+      }else{
+        response = await get(Uri.parse(url));
+      }
+      log(response.request!.headers.toString());
       log(response.body);
       if(response.statusCode==200 || response.statusCode==201){
         final decodedResponse=jsonDecode(response.body);
@@ -20,16 +27,18 @@ class NetworkCaller{
           isSuccess: true,
           responseData: decodedResponse,
         );
-      }else if(response.statusCode==401){
+      }else if(response.statusCode==401 || response.statusCode==400){
         goToSignInScreen();
         return NetworkResponse(
           statusCode: response.statusCode,
           isSuccess: false,
+          errorMessage: jsonDecode(response.body)['message'],
         );
       }else{
         return NetworkResponse(
           statusCode: response.statusCode,
           isSuccess: false,
+          errorMessage: jsonDecode(response.body)['message'],
         );
       }
     }catch(error){
@@ -45,20 +54,21 @@ class NetworkCaller{
   static Future<NetworkResponse> postRequest({required String url,required Map<String,dynamic> body})async{
     log(url);
     log(body.toString());
+    String token = await AuthController.getToken();
     try{
       Map<String,String> header = <String,String>{
         'accept':'application/json',
         'Content-Type':'application/json'
       };
       if(await AuthController.isLoggedIn()){
-        header['token']=AuthController.accessToken;
+        header['Authorization']="Bearer $token";
       }
       final Response response = await post(
         Uri.parse(url),
         headers: header,
         body: jsonEncode(body),
       );
-      log(response.statusCode.toString());
+      log(response.request?.headers.toString()??'null');
       log(response.body);
       if(response.statusCode==200 || response.statusCode==201){
         final decodedResponse=jsonDecode(response.body);

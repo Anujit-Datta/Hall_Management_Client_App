@@ -29,9 +29,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         body: {"email": event.email, "password": event.password},
       );
       if(response.isSuccess){
-        await CurrentUserController.set(jsonEncode(response.responseData['result']['data']['user']));
+        await CurrentUserController.set(response.responseData['result']['data']['user']["userId"]);
         await AuthController.setToken(response.responseData['result']['data']['token']);
         log(response.responseData["result"]["data"]["token"]);
+        log(response.responseData['result']['data']['user']["userId"]);
         EasyLoading.dismiss();
         EasyLoading.showSuccess(response.responseData['result']['message']);
         router.go('/home');
@@ -39,7 +40,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       } else {
         EasyLoading.dismiss();
         EasyLoading.showError(response.responseData['result']['message']);
-        emit(LoginErrorState(response.responseData['result']['message']));
+        emit(AuthInitial(errorMessage: response.responseData['message']));
       }
     });
 

@@ -6,7 +6,8 @@ sealed class AuthState extends Equatable {
 
 final class AuthInitial extends AuthState {
   final bool isObscure;
-  const AuthInitial({this.isObscure = true});
+  final String? errorMessage;
+  const AuthInitial({this.isObscure = true,this.errorMessage});
   @override
   List<Object> get props => [isObscure];
 }
@@ -14,11 +15,4 @@ final class AuthInitial extends AuthState {
 final class LoggedInState extends AuthState {
   @override
   List<Object> get props => [];
-}
-
-final class LoginErrorState extends AuthState {
-  final String errorMessage;
-  const LoginErrorState(this.errorMessage);
-  @override
-  List<Object> get props => [errorMessage];
 }
